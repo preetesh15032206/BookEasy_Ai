@@ -1,0 +1,22 @@
+[
+  { "id": "1", "name": "The Grand Palace", "location": "Connaught Place, New Delhi", "price_per_night": 150, "amenities": ["Pool", "Spa", "Free WiFi", "Gym"] },
+  { "id": "2", "name": "Sunset View Retreat", "location": "Connaught Place, New Delhi", "price_per_night": 120, "amenities": ["Rooftop Bar", "Free WiFi", "Breakfast Included"] },
+  { "id": "3", "name": "Urban Tech Hub Hotel", "location": "Cyber City, Gurugram", "price_per_night": 200, "amenities": ["Co-working Space", "Fast WiFi", "Coffee Shop", "Gym"] },
+  { "id": "4", "name": "Cyber Inn", "location": "Cyber City, Gurugram", "price_per_night": 90, "amenities": ["Free WiFi", "AC", "Breakfast Included"] },
+  { "id": "5", "name": "Cozy Cottage Stay", "location": "Manali, Himachal Pradesh", "price_per_night": 60, "amenities": ["Fireplace", "Mountain View", "Heating"] },
+  { "id": "6", "name": "Himalayan Highs Resort", "location": "Manali, Himachal Pradesh", "price_per_night": 250, "amenities": ["Ski Access", "Spa", "Fine Dining", "Mountain View"] },
+  { "id": "7", "name": "Beachfront Paradise", "location": "Baga Beach, Goa", "price_per_night": 180, "amenities": ["Private Beach", "Pool", "Bar", "Seafood Restaurant"] },
+  { "id": "8", "name": "Goa Surf Shack", "location": "Anjuna Beach, Goa", "price_per_night": 40, "amenities": ["Surfboard Rentals", "Free WiFi", "Hammocks"] },
+  { "id": "9", "name": "Heritage Haveli", "location": "Jaipur, Rajasthan", "price_per_night": 110, "amenities": ["Traditional Architecture", "Courtyard", "Folk Dance Shows", "Restaurant"] },
+  { "id": "10", "name": "Pink City Royal Stay", "location": "Jaipur, Rajasthan", "price_per_night": 300, "amenities": ["Royal Suites", "Pool", "Spa", "Guided Tours"] },
+  { "id": "11", "name": "Lakeside Serenity", "location": "Udaipur, Rajasthan", "price_per_night": 220, "amenities": ["Lake View", "Boat Rides", "Fine Dining", "Rooftop Lounge"] },
+  { "id": "12", "name": "Backwaters Houseboat", "location": "Alleppey, Kerala", "price_per_night": 160, "amenities": ["Private Boat", "Chef on board", "AC Bedrooms"] },
+  { "id": "13", "name": "Spice Garden Homestay", "location": "Munnar, Kerala", "price_per_night": 50, "amenities": ["Garden Tour", "Home Cooked Meals", "Free WiFi"] },
+  { "id": "14", "name": "Silicon Safari Hotel", "location": "Koramangala, Bengaluru", "price_per_night": 130, "amenities": ["Fast WiFi", "Gym", "Breakfast Included", "Pool"] },
+  { "id": "15", "name": "Garden City Suites", "location": "Indiranagar, Bengaluru", "price_per_night": 140, "amenities": ["Kitchenette", "Free WiFi", "Pet Friendly"] },
+  { "id": "16", "name": "Marine Drive Luxury", "location": "South Mumbai", "price_per_night": 350, "amenities": ["Ocean View", "Spa", "Infinity Pool", "Valet Parking"] },
+  { "id": "17", "name": "Bandra Boutique Hotel", "location": "Bandra West, Mumbai", "price_per_night": 170, "amenities": ["Chic Cafe", "Free WiFi", "Art Gallery"] },
+  { "id": "18", "name": "Taj View Residency", "location": "Agra, Uttar Pradesh", "price_per_night": 190, "amenities": ["Taj Mahal View", "Pool", "Restaurant", "Guide Services"] },
+  { "id": "19", "name": "Nawabi Heritage Stay", "location": "Lucknow, Uttar Pradesh", "price_per_night": 100, "amenities": ["Avadhi Cuisine", "Traditional Decor", "Free WiFi"] },
+  { "id": "20", "name": "Darjeeling Tea Estate", "location": "Darjeeling, West Bengal", "price_per_night": 210, "amenities": ["Tea Tasting", "Mountain View", "Fireplace", "Library"] }
+]

@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pinecone-client
+google-generativeai
+python-dotenv
+sqlalchemy
+psycopg2-binary

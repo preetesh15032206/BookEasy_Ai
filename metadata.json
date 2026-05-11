@@ -1,0 +1,6 @@
+{
+  "name": "BookEasy RAG Chatbot",
+  "description": "A full-stack conversational hotel booking chatbot using RAG, Node.js, and an LLM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
