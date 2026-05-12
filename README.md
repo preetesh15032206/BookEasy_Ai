@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# BookEasy
 
-# Run and deploy your AI Studio app
+BookEasy is a conversational hotel booking chatbot using Retrieval-Augmented Generation (RAG), Node.js, and an LLM.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/ab0da7f7-6491-4347-8885-6c573bb82e36
+- Real-time conversational interface for booking hotels.
+- RAG for accurate and context-aware responses based on hotel knowledge.
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
+## Setup
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Build the application:
+   ```bash
+   npm run build
+   ```
+3. Start the application:
+   ```bash
+   npm run start
+   ```
+
+## Environment Variables
+
+Make sure to set the required environment variables in a `.env` file based on the `.env.example`.

@@ -8,7 +8,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { GoogleGenAI } from '@google/genai';
 
 // Polyfill for RAG since Python won't run natively in this sandbox container.
-// This allows you to have a fully working preview right within AI Studio!
+// This allows you to have a fully working preview right within the deployment environment!
 const pc = (process.env.PINECONE_API_KEY && process.env.PINECONE_API_KEY !== 'MY_PINECONE_API_KEY') 
   ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY }) 
   : null;
@@ -188,7 +188,8 @@ async function startServer() {
   });
 
   // Vite middleware
-  if (process.env.NODE_ENV !== 'production') {
+  const envString = (process.env.NODE_ENV || '').replace(/['"]/g, '').trim().toLowerCase();
+  if (envString !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa'
