@@ -31,7 +31,7 @@ def get_listings_from_db():
 
 def embed_text(text_block: str):
     response = genai.embed_content(
-        model="models/text-embedding-004",
+        model="models/gemini-embedding-2-preview",
         content=text_block,
         task_type="retrieval_document"
     )
@@ -54,6 +54,12 @@ def main():
         )
     
     index = pc.Index(INDEX_NAME)
+    
+    logger.info("Clearing old vectors...")
+    try:
+        index.delete(delete_all=True, namespace='listings_v2')
+    except Exception as e:
+        logger.warning(f"Failed to delete old vectors: {e}")
     
     logger.info("Fetching listings from database...")
     listings = get_listings_from_db()
@@ -93,7 +99,7 @@ def main():
         })
         
     logger.info("Upserting vectors into Pinecone...")
-    index.upsert(vectors)
+    index.upsert(vectors=vectors, namespace='listings_v2')
     logger.info("Ingestion complete!")
 
 if __name__ == "__main__":

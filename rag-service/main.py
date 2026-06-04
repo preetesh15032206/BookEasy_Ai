@@ -46,7 +46,7 @@ Context (retrieved listings):
 
 def embed_text(text_block: str):
     response = genai.embed_content(
-        model="models/text-embedding-004",
+        model="models/gemini-embedding-2-preview",
         content=text_block,
         task_type="retrieval_document"
     )
@@ -66,7 +66,8 @@ def chat_endpoint(req: ChatRequest):
         search_results = index.query(
             vector=query_embedding,
             top_k=5,
-            include_metadata=True
+            include_metadata=True,
+            namespace='listings_v2'
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Pinecone query error: {e}")

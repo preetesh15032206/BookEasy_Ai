@@ -35,10 +35,11 @@ Context (retrieved listings):
 async function getRagResponse(query: string, history: Array<{role: string, text: string}> = []) {
   try {
     // Try hitting the local Python service first (if user runs it locally)
-    const res = await fetch('http://localhost:8000/chat', {
+    const res = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
+        body: JSON.stringify({ query }),
+        signal: AbortSignal.timeout(2000)
     });
     if (res.ok) {
         return await res.json();
@@ -51,9 +52,9 @@ async function getRagResponse(query: string, history: Array<{role: string, text:
      return { reply: "Missing configuration. Please trigger data ingestion or ensure Pinecone/Gemini API keys are set.", intent: "info" };
   }
 
-  const index = pc.Index('bookeasy-listings');
+  const index = pc.Index('bookeasy-listings').namespace('listings_v2');
   const embedRes = await ai.models.embedContent({
-    model: 'gemini-embedding-2',
+    model: 'gemini-embedding-2-preview',
     contents: query,
   });
   
@@ -75,7 +76,7 @@ async function getRagResponse(query: string, history: Array<{role: string, text:
   
   const prompt = `${SYSTEM_PROMPT}\nNote: We current have a total of ${totalHotels} hotels in our entire database.\n\nContext (retrieved listings):\n${contextStr}\n\nConversation History:\n${historyStr}\n\nUser: ${query}`;
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash',
     contents: prompt,
     config: {
         responseMimeType: "application/json",
@@ -163,7 +164,14 @@ async function startServer() {
            });
         }
         
-        const index = pc.Index(indexName);
+        const index = pc.Index(indexName).namespace('listings_v2');
+        console.log('Clearing old vectors in namespace...');
+        try {
+            await index.deleteAll();
+        } catch (e: any) {
+            console.log('Delete all error (ignoring):', e.message);
+        }
+        
         const listings = await Listing.findAll();
         const vectors = [];
         for (const lst of listings) {
@@ -171,7 +179,7 @@ async function startServer() {
             const content = `Hotel Name: ${lst.name}\nLocation: ${lst.location}\nPrice per night: $${lst.price_per_night}\nAmenities: ${amenitiesStr}`;
             
             const embedRes = await ai.models.embedContent({
-                model: 'gemini-embedding-2',
+                model: 'gemini-embedding-2-preview',
                 contents: content,
             });
             
