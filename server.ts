@@ -32,7 +32,7 @@ Always respond in this strictly formatted JSON object:
 Context (retrieved listings):
 `;
 
-async function getRagResponse(query: string) {
+async function getRagResponse(query: string, history: Array<{role: string, text: string}> = []) {
   try {
     // Try hitting the local Python service first (if user runs it locally)
     const res = await fetch('http://localhost:8000/chat', {
@@ -60,7 +60,7 @@ async function getRagResponse(query: string) {
   const vector = embedRes.embeddings[0].values;
   const searchResults = await (index as any).query({
     vector,
-    topK: 5,
+    topK: 20,
     includeMetadata: true
   });
   
@@ -69,7 +69,11 @@ async function getRagResponse(query: string) {
      contextStr += `- ID: ${match.id}\n${match.metadata!.text}\n\n`;
   }
   
-  const prompt = `${SYSTEM_PROMPT}\n${contextStr}\nUser: ${query}`;
+  const totalHotels = await Listing.count();
+  
+  let historyStr = history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n');
+  
+  const prompt = `${SYSTEM_PROMPT}\nNote: We current have a total of ${totalHotels} hotels in our entire database.\n\nContext (retrieved listings):\n${contextStr}\n\nConversation History:\n${historyStr}\n\nUser: ${query}`;
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash',
     contents: prompt,
@@ -83,11 +87,18 @@ async function getRagResponse(query: string) {
 }
 
 import { sequelize } from './src/db/database.ts';
+import { User } from './src/db/models.ts';
+import { seedDatabase } from './src/db/seed.ts';
 
 async function startServer() {
   try {
     await sequelize.sync();
-    console.log('Database synced');
+    const count = await User.count();
+    if (count === 0) {
+      await seedDatabase();
+    } else {
+      console.log('Database already seeded');
+    }
   } catch (err) {
     console.error('Failed to sync database on startup:', err);
   }
@@ -216,7 +227,7 @@ async function startServer() {
   io.on('connection', (socket) => {
     socket.on('chat message', async (msg) => {
       try {
-        const aiResponse = await getRagResponse(msg.text);
+        const aiResponse = await getRagResponse(msg.text, msg.history || []);
         
         // Handle Action based on Intent
         if (aiResponse.intent === 'book' && aiResponse.listing_id && aiResponse.check_in && aiResponse.check_out) {

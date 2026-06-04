@@ -39,8 +39,9 @@ export default function App() {
 
   const sendMessage = () => {
     if (!input.trim() || !socketRef.current) return;
-    setMessages(prev => [...prev, { role: 'user', text: input }]);
-    socketRef.current.emit('chat message', { text: input, user_id: MOCK_USER_ID });
+    const newMessages: Message[] = [...messages, { role: 'user', text: input }];
+    setMessages(newMessages);
+    socketRef.current.emit('chat message', { text: input, history: newMessages, user_id: MOCK_USER_ID });
     setInput('');
   };
 
