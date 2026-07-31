@@ -45,7 +45,7 @@ def main():
         logger.info(f"Creating Pinecone index '{INDEX_NAME}'...")
         pc.create_index(
             name=INDEX_NAME,
-            dimension=768, # Gemini text-embedding-004 dimension is 768
+            dimension=768, # Gemini gemini-embedding-2-preview dimension is 768
             metric="cosine",
             spec=ServerlessSpec(
                 cloud="aws",

@@ -83,7 +83,7 @@ def chat_endpoint(req: ChatRequest):
     
     # We use genai structured JSON generation
     # It takes the schema implicitly via prompt but we can enforce it via 'response_mime_type'.
-    model = genai.GenerativeModel("models/gemini-2.5-flash")
+    model = genai.GenerativeModel("models/gemini-flash-latest")
     
     try:
         response = model.generate_content(

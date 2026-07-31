@@ -20,9 +20,10 @@ const SYSTEM_PROMPT = `You are BookEasy, a smart hotel booking assistant.
 Be helpful and friendly. 
 If the user asks a general conversational question (like "hello", "how are you", "who are you"), reply naturally and politely.
 If the user asks about hotels, search, or booking, answer using ONLY the context provided below. If no context matches their hotel query, say so honestly.
+DO NOT use Markdown formatting (like **bolding** or *bullets*) in your reply. Use plain text only.
 Always respond in this strictly formatted JSON object:
 {
-  "reply": "<your response>",
+  "reply": "<your response in plain text>",
   "intent": "search" | "book" | "cancel" | "info" | "greeting",
   "listing_id": "<id or null>",
   "check_in": "<YYYY-MM-DD or null>",
@@ -32,7 +33,7 @@ Always respond in this strictly formatted JSON object:
 Context (retrieved listings):
 `;
 
-async function getRagResponse(query: string, history: Array<{role: string, text: string}> = []) {
+export async function getRagResponse(query: string, history: Array<{role: string, text: string}> = []) {
   try {
     // Try hitting the local Python service first (if user runs it locally)
     const res = await fetch('http://127.0.0.1:8000/chat', {
@@ -74,11 +75,20 @@ async function getRagResponse(query: string, history: Array<{role: string, text:
   
   let historyStr = history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n');
   
-  const prompt = `${SYSTEM_PROMPT}\nNote: We current have a total of ${totalHotels} hotels in our entire database.\n\nContext (retrieved listings):\n${contextStr}\n\nConversation History:\n${historyStr}\n\nUser: ${query}`;
+  const prompt = `Note: We current have a total of ${totalHotels} hotels in our entire database.
+
+Context (retrieved listings):
+${contextStr}
+
+Conversation History:
+${historyStr}
+
+User: ${query}`;
   const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash',
+    model: 'gemini-flash-latest',
     contents: prompt,
     config: {
+        systemInstruction: SYSTEM_PROMPT,
         responseMimeType: "application/json",
         temperature: 0.0
     }
@@ -169,7 +179,9 @@ async function startServer() {
         try {
             await index.deleteAll();
         } catch (e: any) {
-            console.log('Delete all error (ignoring):', e.message);
+            if (!e.message.includes('404')) {
+                console.warn('Delete all warning (ignoring):', e.message);
+            }
         }
         
         const listings = await Listing.findAll();
