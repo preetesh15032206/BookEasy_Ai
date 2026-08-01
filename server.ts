@@ -98,7 +98,6 @@ User: ${query}`;
 }
 
 import { sequelize } from './src/db/database.ts';
-import { User } from './src/db/models.ts';
 import { seedDatabase } from './src/db/seed.ts';
 
 async function startServer() {
@@ -120,6 +119,7 @@ async function startServer() {
   // ==========================================
   // STEP 4: BOOKING MICROSERVICE REST ENDPOINTS
   // ==========================================
+  app.get('/api/debug-env', (req, res) => res.json({ db: process.env.DATABASE_URL }));
   app.get('/api/listings', async (req, res) => {
     try {
         const listings = await Listing.findAll({ where: { available: true } });
@@ -285,7 +285,7 @@ async function startServer() {
     });
   });
 
-  const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+  const PORT = 3000;
   httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
